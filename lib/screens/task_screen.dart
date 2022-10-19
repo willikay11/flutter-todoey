@@ -1,28 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/TaskActions.dart';
 import 'package:todoey/screens/add_task_screen.dart';
 import 'package:todoey/widgets/task_list.dart';
 
-import '../models/Task.dart';
-
-class TasksScreen extends StatefulWidget {
+class TasksScreen extends StatelessWidget {
   const TasksScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> tasks = [
-    Task(name: 'Buy Milk', isDone: false),
-    Task(name: 'Buy Eggs', isDone: false),
-    Task(name: 'Buy Bread', isDone: false),
-  ];
-
-  void addTask(String value) {
-    setState(() {
-      tasks.add(Task(name: value, isDone: false));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +17,7 @@ class _TasksScreenState extends State<TasksScreen> {
           onPressed: () {
             showModalBottomSheet(
               context: context,
-              builder: (context) => AddTaskScreen(
-                (value) {
-                  addTask(value);
-                  Navigator.pop(context);
-                },
-              ),
+              builder: (context) => const AddTaskScreen(),
             );
           }),
       body: Column(
@@ -68,8 +46,8 @@ class _TasksScreenState extends State<TasksScreen> {
                       fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  '${tasks.length} Tasks',
-                  style: TextStyle(fontSize: 18.0, color: Colors.white),
+                  '${context.watch<TaskActions>().tasks.length} Tasks',
+                  style: const TextStyle(fontSize: 18.0, color: Colors.white),
                 ),
               ],
             ),
@@ -84,11 +62,7 @@ class _TasksScreenState extends State<TasksScreen> {
                   topRight: Radius.circular(20.0),
                 ),
               ),
-              child: TaskList(tasks, (index) {
-                setState(() {
-                  tasks[index].toggleDone();
-                });
-              }),
+              child: const TaskList(),
             ),
           ),
         ],

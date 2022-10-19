@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey/models/TaskActions.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  final Function addTaskCb;
-
-  const AddTaskScreen(this.addTaskCb, {super.key});
+  const AddTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +45,8 @@ class AddTaskScreen extends StatelessWidget {
               const SizedBox(height: 20.0),
               MaterialButton(
                 onPressed: () {
-                  addTaskCb(newTaskTitle);
+                  context.read<TaskActions>().addTask(newTaskTitle);
+                  Navigator.pop(context);
                 },
                 color: Colors.lightBlueAccent,
                 height: 50.0,
